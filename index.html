@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>马拉松应援灯牌</title>
+    <style>
+        @keyframes glow1 {
+            0% {
+                text-shadow: 0 0 10px #fff,
+                           0 0 20px #fff,
+                           0 0 30px #ff0080,
+                           0 0 40px #ff0080,
+                           0 0 50px #ff0080,
+                           0 0 60px #ff0080,
+                           0 0 70px #ff0080;
+            }
+            100% {
+                text-shadow: 0 0 20px #fff,
+                           0 0 30px #ff69b4,
+                           0 0 40px #ff69b4,
+                           0 0 50px #ff69b4,
+                           0 0 60px #ff69b4,
+                           0 0 70px #ff69b4,
+                           0 0 80px #ff69b4;
+            }
+        }
+
+        @keyframes glow2 {
+            0% {
+                text-shadow: 0 0 10px #fff,
+                           0 0 20px #fff,
+                           0 0 30px #00ff00,
+                           0 0 40px #00ff00,
+                           0 0 50px #00ff00,
+                           0 0 60px #00ff00,
+                           0 0 70px #00ff00;
+            }
+            100% {
+                text-shadow: 0 0 20px #fff,
+                           0 0 30px #33ff33,
+                           0 0 40px #33ff33,
+                           0 0 50px #33ff33,
+                           0 0 60px #33ff33,
+                           0 0 70px #33ff33,
+                           0 0 80px #33ff33;
+            }
+        }
+
+        @keyframes glow3 {
+            0% {
+                text-shadow: 0 0 10px #fff,
+                           0 0 20px #fff,
+                           0 0 30px #ff8c00,
+                           0 0 40px #ff8c00,
+                           0 0 50px #ff8c00,
+                           0 0 60px #ff8c00,
+                           0 0 70px #ff8c00;
+            }
+            100% {
+                text-shadow: 0 0 20px #fff,
+                           0 0 30px #ffa500,
+                           0 0 40px #ffa500,
+                           0 0 50px #ffa500,
+                           0 0 60px #ffa500,
+                           0 0 70px #ffa500,
+                           0 0 80px #ffa500;
+            }
+        }
+
+        .effect1 {
+            animation: glow1 1s ease-in-out infinite alternate;
+        }
+
+        .effect2 {
+            animation: glow2 1s ease-in-out infinite alternate;
+        }
+
+        .effect3 {
+            animation: glow3 1s ease-in-out infinite alternate;
+        }
+
+        body {
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center">
+    <div class="text-center">
+        <div id="inputSection" class="mb-8">
+            <input type="text" 
+                   id="cheerText" 
+                   value="袁哲加油！" 
+                   class="bg-gray-800 text-white text-2xl px-4 py-2 rounded-lg mb-4 w-64 text-center"
+                   maxlength="20">
+            <br>
+            <div class="space-x-4">
+                <button onclick="changeEffect()" 
+                        class="bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
+                    切换特效
+                </button>
+                <button onclick="updateText()" 
+                        class="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
+                    确认
+                </button>
+            </div>
+        </div>
+        <h1 id="displayText" class="effect1 text-white text-8xl md:text-9xl lg:text-[150px] font-bold tracking-wider">
+            袁哲加油！
+        </h1>
+    </div>
+
+    <script>
+        let currentEffect = 1;
+        const totalEffects = 3;
+
+        function changeEffect() {
+            currentEffect = (currentEffect % totalEffects) + 1;
+            const displayText = document.getElementById('displayText');
+            
+            // 移除所有效果类
+            displayText.classList.remove('effect1', 'effect2', 'effect3');
+            // 添加新效果
+            displayText.classList.add('effect' + currentEffect);
+            
+            // 更新文字
+            const newText = document.getElementById('cheerText').value;
+            displayText.innerText = newText;
+        }
+
+        function updateText() {
+            const newText = document.getElementById('cheerText').value;
+            document.getElementById('displayText').innerText = newText;
+            document.getElementById('inputSection').style.display = 'none';
+            
+            // 进入全屏
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+            });
+        }
+
+        // 点击屏幕任意位置显示输入框
+        document.addEventListener('click', function(e) {
+            // 如果点击的不是输入框或按钮
+            if (!e.target.closest('#inputSection')) {
+                const inputSection = document.getElementById('inputSection');
+                if (inputSection.style.display === 'none') {
+                    inputSection.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
