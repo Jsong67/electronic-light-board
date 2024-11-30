@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@700&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
     <title>马拉松应援灯牌</title>
     <style>
         @keyframes glow1 {
@@ -69,16 +70,31 @@
             }
         }
 
-        .effect1 {
-            animation: glow1 1s ease-in-out infinite alternate;
+        @keyframes scrollText {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
         }
 
-        .effect2 {
-            animation: glow2 1s ease-in-out infinite alternate;
-        }
+        .effect1 { animation: glow1 1s ease-in-out infinite alternate; }
+        .effect2 { animation: glow2 1s ease-in-out infinite alternate; }
+        .effect3 { animation: glow3 1s ease-in-out infinite alternate; }
 
-        .effect3 {
-            animation: glow3 1s ease-in-out infinite alternate;
+        .font1 { font-family: 'Noto Sans SC', sans-serif; }
+        .font2 { font-family: 'Ma Shan Zheng', cursive; }
+        .font3 { font-family: 'Zhi Mang Xing', cursive; }
+
+        .scroll-slow { animation: scrollText 20s linear infinite; }
+        .scroll-medium { animation: scrollText 15s linear infinite; }
+        .scroll-fast { animation: scrollText 10s linear infinite; }
+        
+        .scroll-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
         }
 
         body {
@@ -86,65 +102,160 @@
             -webkit-user-select: none;
             user-select: none;
         }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 200px;
+            height: 8px;
+            background: #444;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #ff69b4;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        #displayText {
+            white-space: pre;
+            line-height: 1.2;
+        }
     </style>
 </head>
 <body class="bg-black min-h-screen flex items-center justify-center">
     <div class="text-center">
         <div id="inputSection" class="mb-8">
-            <input type="text" 
-                   id="cheerText" 
-                   value="袁哲加油！" 
-                   class="bg-gray-800 text-white text-2xl px-4 py-2 rounded-lg mb-4 w-64 text-center"
-                   maxlength="20">
-            <br>
-            <div class="space-x-4">
-                <button onclick="changeEffect()" 
-                        class="bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
-                    切换特效
-                </button>
-                <button onclick="updateText()" 
-                        class="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
-                    确认
-                </button>
+            <textarea 
+                id="cheerText" 
+                rows="3"
+                class="bg-gray-800 text-white text-2xl px-4 py-2 rounded-lg mb-4 w-80 text-center"
+                maxlength="50">袁哲加油！</textarea>
+            <div class="space-y-4 mb-4">
+                <div class="flex items-center justify-center space-x-2">
+                    <span class="text-white">字体大小:</span>
+                    <input type="range" 
+                           id="fontSize" 
+                           min="60" 
+                           max="200" 
+                           value="150" 
+                           class="mx-2"
+                           oninput="updateFontSize()">
+                    <span id="fontSizeValue" class="text-white">150px</span>
+                </div>
+                <div class="space-x-2">
+                    <button onclick="changeFont(1)" 
+                            class="bg-purple-500 hover:bg-purple-600 text-white text-xl font-bold py-2 px-4 rounded-lg">
+                        黑体
+                    </button>
+                    <button onclick="changeFont(2)" 
+                            class="bg-purple-500 hover:bg-purple-600 text-white text-xl font-bold py-2 px-4 rounded-lg">
+                        马善政
+                    </button>
+                    <button onclick="changeFont(3)" 
+                            class="bg-purple-500 hover:bg-purple-600 text-white text-xl font-bold py-2 px-4 rounded-lg">
+                        智慧体
+                    </button>
+                </div>
+                <div class="space-x-2">
+                    <button onclick="changeEffect()" 
+                            class="bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
+                        切换特效
+                    </button>
+                    <button onclick="toggleScroll()" 
+                            class="bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
+                        切换滚动
+                    </button>
+                    <button onclick="updateText()" 
+                            class="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
+                        确认
+                    </button>
+                </div>
             </div>
         </div>
-        <h1 id="displayText" class="effect1 text-white text-8xl md:text-9xl lg:text-[150px] font-bold tracking-wider">
-            袁哲加油！
-        </h1>
+        <div class="scroll-container">
+            <h1 id="displayText" class="effect1 font1 text-white text-8xl md:text-9xl font-bold tracking-wider">
+                袁哲加油！
+            </h1>
+        </div>
     </div>
 
     <script>
         let currentEffect = 1;
+        let currentFont = 1;
+        let currentScroll = 0; // 0: 无滚动, 1: 慢速, 2: 中速, 3: 快速
         const totalEffects = 3;
+
+        // 处理输入，只接受\n作为换行
+        document.getElementById('cheerText').addEventListener('input', function() {
+            let text = this.value;
+            text = text.replace(/\r\n/g, '\\n').replace(/\n/g, '\\n');
+            this.value = text;
+        });
+
+        function toggleScroll() {
+            const displayText = document.getElementById('displayText');
+            currentScroll = (currentScroll + 1) % 4;
+            
+            // 移除所有滚动类
+            displayText.classList.remove('scroll-slow', 'scroll-medium', 'scroll-fast');
+            
+            // 添加新的滚动类
+            switch(currentScroll) {
+                case 1:
+                    displayText.classList.add('scroll-slow');
+                    break;
+                case 2:
+                    displayText.classList.add('scroll-medium');
+                    break;
+                case 3:
+                    displayText.classList.add('scroll-fast');
+                    break;
+            }
+        }
+
+        function updateFontSize() {
+            const size = document.getElementById('fontSize').value;
+            document.getElementById('fontSizeValue').textContent = size + 'px';
+            document.getElementById('displayText').style.fontSize = size + 'px';
+        }
+
+        function changeFont(fontNum) {
+            currentFont = fontNum;
+            const displayText = document.getElementById('displayText');
+            displayText.classList.remove('font1', 'font2', 'font3');
+            displayText.classList.add('font' + fontNum);
+        }
 
         function changeEffect() {
             currentEffect = (currentEffect % totalEffects) + 1;
             const displayText = document.getElementById('displayText');
-            
-            // 移除所有效果类
             displayText.classList.remove('effect1', 'effect2', 'effect3');
-            // 添加新效果
             displayText.classList.add('effect' + currentEffect);
             
-            // 更新文字
-            const newText = document.getElementById('cheerText').value;
+            const newText = document.getElementById('cheerText').value.replace(/\\n/g, '\n');
             displayText.innerText = newText;
         }
 
         function updateText() {
-            const newText = document.getElementById('cheerText').value;
+            const newText = document.getElementById('cheerText').value.replace(/\\n/g, '\n');
             document.getElementById('displayText').innerText = newText;
             document.getElementById('inputSection').style.display = 'none';
             
-            // 进入全屏
             document.documentElement.requestFullscreen().catch(err => {
                 console.log(`Error attempting to enable full-screen mode: ${err.message}`);
             });
         }
 
-        // 点击屏幕任意位置显示输入框
         document.addEventListener('click', function(e) {
-            // 如果点击的不是输入框或按钮
             if (!e.target.closest('#inputSection')) {
                 const inputSection = document.getElementById('inputSection');
                 if (inputSection.style.display === 'none') {
@@ -152,6 +263,9 @@
                 }
             }
         });
+
+        // 初始化字体大小
+        updateFontSize();
     </script>
 </body>
 </html>
