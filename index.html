@@ -70,15 +70,6 @@
             }
         }
 
-        @keyframes scrollText {
-            from {
-                transform: translateX(100%);
-            }
-            to {
-                transform: translateX(-100%);
-            }
-        }
-
         .effect1 { animation: glow1 1s ease-in-out infinite alternate; }
         .effect2 { animation: glow2 1s ease-in-out infinite alternate; }
         .effect3 { animation: glow3 1s ease-in-out infinite alternate; }
@@ -87,20 +78,11 @@
         .font2 { font-family: 'Ma Shan Zheng', cursive; }
         .font3 { font-family: 'Zhi Mang Xing', cursive; }
 
-        .scroll-slow { animation: scrollText 20s linear infinite; }
-        .scroll-medium { animation: scrollText 15s linear infinite; }
-        .scroll-fast { animation: scrollText 10s linear infinite; }
-        
-        .scroll-container {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
         body {
             touch-action: none;
             -webkit-user-select: none;
             user-select: none;
+            overflow: hidden;
         }
 
         input[type="range"] {
@@ -128,18 +110,31 @@
         #displayText {
             white-space: pre;
             line-height: 1.2;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            text-align: center;
+        }
+
+        .display-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
         }
     </style>
 </head>
-<body class="bg-black min-h-screen flex items-center justify-center">
-    <div class="text-center">
-        <div id="inputSection" class="mb-8">
+<body class="bg-black">
+    <div id="inputSection" class="absolute top-0 left-0 w-full p-4 z-10">
+        <div class="max-w-2xl mx-auto bg-gray-900/80 p-4 rounded-lg backdrop-blur">
             <textarea 
                 id="cheerText" 
                 rows="3"
-                class="bg-gray-800 text-white text-2xl px-4 py-2 rounded-lg mb-4 w-80 text-center"
+                class="bg-gray-800 text-white text-2xl px-4 py-2 rounded-lg mb-4 w-full text-center"
                 maxlength="50">袁哲加油！</textarea>
-            <div class="space-y-4 mb-4">
+            <div class="space-y-4">
                 <div class="flex items-center justify-center space-x-2">
                     <span class="text-white">字体大小:</span>
                     <input type="range" 
@@ -170,10 +165,6 @@
                             class="bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
                         切换特效
                     </button>
-                    <button onclick="toggleScroll()" 
-                            class="bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
-                        切换滚动
-                    </button>
                     <button onclick="updateText()" 
                             class="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
                         确认
@@ -181,17 +172,17 @@
                 </div>
             </div>
         </div>
-        <div class="scroll-container">
-            <h1 id="displayText" class="effect1 font1 text-white text-8xl md:text-9xl font-bold tracking-wider">
-                袁哲加油！
-            </h1>
-        </div>
+    </div>
+
+    <div class="display-container">
+        <h1 id="displayText" class="effect1 font1 text-white text-8xl md:text-9xl font-bold tracking-wider">
+            袁哲加油！
+        </h1>
     </div>
 
     <script>
         let currentEffect = 1;
         let currentFont = 1;
-        let currentScroll = 0; // 0: 无滚动, 1: 慢速, 2: 中速, 3: 快速
         const totalEffects = 3;
 
         // 处理输入，只接受\n作为换行
@@ -200,27 +191,6 @@
             text = text.replace(/\r\n/g, '\\n').replace(/\n/g, '\\n');
             this.value = text;
         });
-
-        function toggleScroll() {
-            const displayText = document.getElementById('displayText');
-            currentScroll = (currentScroll + 1) % 4;
-            
-            // 移除所有滚动类
-            displayText.classList.remove('scroll-slow', 'scroll-medium', 'scroll-fast');
-            
-            // 添加新的滚动类
-            switch(currentScroll) {
-                case 1:
-                    displayText.classList.add('scroll-slow');
-                    break;
-                case 2:
-                    displayText.classList.add('scroll-medium');
-                    break;
-                case 3:
-                    displayText.classList.add('scroll-fast');
-                    break;
-            }
-        }
 
         function updateFontSize() {
             const size = document.getElementById('fontSize').value;
@@ -266,6 +236,11 @@
 
         // 初始化字体大小
         updateFontSize();
+
+        // 防止页面滚动
+        document.body.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
     </script>
 </body>
 </html>
