@@ -49,11 +49,11 @@
 
         .scroll-container {
             position: absolute;
-            top: 0;
+            top: 50%;
             left: 0;
             white-space: nowrap;
             will-change: transform;
-            padding-top: 20px;
+            transform: translateY(-50%);
         }
 
         .scroll-text {
@@ -63,10 +63,10 @@
 
         @keyframes scroll {
             0% {
-                transform: translateX(0);
+                transform: translateX(0) translateY(-50%);
             }
             100% {
-                transform: translateX(-50%);
+                transform: translateX(-50%) translateY(-50%);
             }
         }
 
@@ -154,7 +154,7 @@
 
         .centered {
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
