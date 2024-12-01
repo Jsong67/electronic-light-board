@@ -1,82 +1,72 @@
 <!DOCTYPE html>
 <html lang="zh">
+<!-- 前面的 head 部分样式保持不变，只添加新的字体链接和样式 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@700&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@700&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&family=ZCOOL+XiaoWei&family=Zhi+Mang+Xing&family=Long+Cang&family=Liu+Jian+Mao+Cao&family=Noto+Serif+SC:wght@700&family=Noto+Sans+TC:wght@700&display=swap" rel="stylesheet">
     <title>马拉松应援灯牌</title>
     <style>
-        @keyframes glow1 {
+        /* 之前的样式保持不变 */
+        .glow {
+            animation: glow 1s ease-in-out infinite alternate;
+            position: relative;
+        }
+
+        @keyframes glow {
             0% {
-                text-shadow: 0 0 10px #fff,
-                           0 0 20px #fff,
-                           0 0 30px #ff0080,
-                           0 0 40px #ff0080,
-                           0 0 50px #ff0080,
-                           0 0 60px #ff0080,
-                           0 0 70px #ff0080;
+                filter: drop-shadow(0 0 2px #fff) 
+                        drop-shadow(0 0 4px #fff)
+                        drop-shadow(0 0 6px var(--main-color))
+                        drop-shadow(0 0 8px var(--main-color))
+                        drop-shadow(0 0 10px var(--main-color))
+                        drop-shadow(0 0 12px var(--main-color));
             }
             100% {
-                text-shadow: 0 0 20px #fff,
-                           0 0 30px #ff69b4,
-                           0 0 40px #ff69b4,
-                           0 0 50px #ff69b4,
-                           0 0 60px #ff69b4,
-                           0 0 70px #ff69b4,
-                           0 0 80px #ff69b4;
+                filter: drop-shadow(0 0 4px #fff)
+                        drop-shadow(0 0 6px var(--sub-color))
+                        drop-shadow(0 0 8px var(--sub-color))
+                        drop-shadow(0 0 10px var(--sub-color))
+                        drop-shadow(0 0 12px var(--sub-color))
+                        drop-shadow(0 0 14px var(--sub-color));
             }
         }
 
-        @keyframes glow2 {
-            0% {
-                text-shadow: 0 0 10px #fff,
-                           0 0 20px #fff,
-                           0 0 30px #00ff00,
-                           0 0 40px #00ff00,
-                           0 0 50px #00ff00,
-                           0 0 60px #00ff00,
-                           0 0 70px #00ff00;
-            }
-            100% {
-                text-shadow: 0 0 20px #fff,
-                           0 0 30px #33ff33,
-                           0 0 40px #33ff33,
-                           0 0 50px #33ff33,
-                           0 0 60px #33ff33,
-                           0 0 70px #33ff33,
-                           0 0 80px #33ff33;
-            }
-        }
-
-        @keyframes glow3 {
-            0% {
-                text-shadow: 0 0 10px #fff,
-                           0 0 20px #fff,
-                           0 0 30px #ff8c00,
-                           0 0 40px #ff8c00,
-                           0 0 50px #ff8c00,
-                           0 0 60px #ff8c00,
-                           0 0 70px #ff8c00;
-            }
-            100% {
-                text-shadow: 0 0 20px #fff,
-                           0 0 30px #ffa500,
-                           0 0 40px #ffa500,
-                           0 0 50px #ffa500,
-                           0 0 60px #ffa500,
-                           0 0 70px #ffa500,
-                           0 0 80px #ffa500;
-            }
-        }
-
-        .effect1 { animation: glow1 1s ease-in-out infinite alternate; }
-        .effect2 { animation: glow2 1s ease-in-out infinite alternate; }
-        .effect3 { animation: glow3 1s ease-in-out infinite alternate; }
-
+        /* 添加新的字体类 */
         .font1 { font-family: 'Noto Sans SC', sans-serif; }
-        .font2 { font-family: 'Ma Shan Zheng', cursive; }
-        .font3 { font-family: 'Zhi Mang Xing', cursive; }
+        .font2 { font-family: 'Noto Serif SC', serif; }
+        .font3 { font-family: 'Ma Shan Zheng', cursive; }
+        .font4 { font-family: 'Zhi Mang Xing', cursive; }
+        .font5 { font-family: 'ZCOOL KuaiLe', sans-serif; }
+        .font6 { font-family: 'ZCOOL QingKe HuangYou', sans-serif; }
+        .font7 { font-family: 'ZCOOL XiaoWei', serif; }
+        .font8 { font-family: 'Long Cang', cursive; }
+        .font9 { font-family: 'Liu Jian Mao Cao', cursive; }
+        .font10 { font-family: 'Noto Sans TC', sans-serif; }
+
+        /* 其他样式保持不变 */
+        .scroll-container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .scroll-text {
+            display: inline-block;
+            padding-right: 100vw;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
 
         body {
             touch-action: none;
@@ -85,6 +75,17 @@
             overflow: hidden;
         }
 
+        /* 添加下拉列表样式 */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+            padding-right: 2.5rem;
+        }
+
+        /* 其他样式保持不变 */
         input[type="range"] {
             -webkit-appearance: none;
             width: 200px;
@@ -103,6 +104,31 @@
             cursor: pointer;
         }
 
+        input[type="color"] {
+            -webkit-appearance: none;
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 50%;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            text-align: center;
+        }
+
         textarea {
             resize: none;
         }
@@ -110,11 +136,7 @@
         #displayText {
             white-space: pre;
             line-height: 1.2;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
+            display: inline-block;
             text-align: center;
         }
 
@@ -123,6 +145,15 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
+        }
+
+        .scrolling {
+            animation: scroll linear infinite;
+        }
+
+        .centered {
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
@@ -133,7 +164,7 @@
                 id="cheerText" 
                 rows="3"
                 class="bg-gray-800 text-white text-2xl px-4 py-2 rounded-lg mb-4 w-full text-center"
-                maxlength="50">袁哲加油！</textarea>
+                maxlength="50">+7AI实验室</textarea>
             <div class="space-y-4">
                 <div class="flex items-center justify-center space-x-2">
                     <span class="text-white">字体大小:</span>
@@ -146,25 +177,48 @@
                            oninput="updateFontSize()">
                     <span id="fontSizeValue" class="text-white">150px</span>
                 </div>
-                <div class="space-x-2">
-                    <button onclick="changeFont(1)" 
-                            class="bg-purple-500 hover:bg-purple-600 text-white text-xl font-bold py-2 px-4 rounded-lg">
-                        黑体
-                    </button>
-                    <button onclick="changeFont(2)" 
-                            class="bg-purple-500 hover:bg-purple-600 text-white text-xl font-bold py-2 px-4 rounded-lg">
-                        马善政
-                    </button>
-                    <button onclick="changeFont(3)" 
-                            class="bg-purple-500 hover:bg-purple-600 text-white text-xl font-bold py-2 px-4 rounded-lg">
-                        智慧体
-                    </button>
+                <div class="flex items-center justify-center space-x-4 mb-4">
+                    <div class="text-center">
+                        <div class="text-white mb-2">主要颜色</div>
+                        <input type="color" id="mainColor" value="#ff0080" oninput="updateColors()">
+                    </div>
+                    <div class="text-center">
+                        <div class="text-white mb-2">辅助颜色</div>
+                        <input type="color" id="subColor" value="#ff69b4" oninput="updateColors()">
+                    </div>
+                </div>
+                <div class="flex items-center justify-center space-x-4 mb-4">
+                    <div class="text-center">
+                        <div class="text-white mb-2">滚动速度 (秒/圈)</div>
+                        <input type="number" 
+                               id="scrollSpeed" 
+                               min="0" 
+                               max="60" 
+                               value="3" 
+                               class="bg-gray-800 text-white px-2 py-1 rounded"
+                               oninput="updateScrollSpeed()">
+                    </div>
+                </div>
+                <div class="flex items-center justify-center space-x-4 mb-4">
+                    <div class="text-center w-64">
+                        <div class="text-white mb-2">选择字体</div>
+                        <select id="fontSelect" 
+                                class="w-full bg-gray-800 text-white px-4 py-2 rounded-lg"
+                                onchange="changeFont(this.value)">
+                            <option value="1">思源黑体</option>
+                            <option value="2">思源宋体</option>
+                            <option value="3">马善政</option>
+                            <option value="4">智慧体</option>
+                            <option value="5">快乐体</option>
+                            <option value="6">青柯黄油体</option>
+                            <option value="7">小魏体</option>
+                            <option value="8">长仓体</option>
+                            <option value="9">刘建毛草体</option>
+                            <option value="10">思源黑体繁体</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="space-x-2">
-                    <button onclick="changeEffect()" 
-                            class="bg-blue-500 hover:bg-blue-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
-                        切换特效
-                    </button>
                     <button onclick="updateText()" 
                             class="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
                         确认
@@ -175,15 +229,22 @@
     </div>
 
     <div class="display-container">
-        <h1 id="displayText" class="effect1 font1 text-white text-8xl md:text-9xl font-bold tracking-wider">
-            袁哲加油！
-        </h1>
+        <div id="textContainer" class="scroll-container">
+            <div class="scroll-text">
+                <h1 id="displayText" class="glow font1 text-white text-8xl md:text-9xl font-bold tracking-wider">
+                    +7AI实验室
+                </h1>
+            </div>
+            <div class="scroll-text">
+                <h1 id="displayText2" class="glow font1 text-white text-8xl md:text-9xl font-bold tracking-wider">
+                    +7AI实验室
+                </h1>
+            </div>
+        </div>
     </div>
 
     <script>
-        let currentEffect = 1;
         let currentFont = 1;
-        const totalEffects = 3;
 
         // 处理输入，只接受\n作为换行
         document.getElementById('cheerText').addEventListener('input', function() {
@@ -196,29 +257,54 @@
             const size = document.getElementById('fontSize').value;
             document.getElementById('fontSizeValue').textContent = size + 'px';
             document.getElementById('displayText').style.fontSize = size + 'px';
+            document.getElementById('displayText2').style.fontSize = size + 'px';
+            updateScrollSpeed();
         }
 
         function changeFont(fontNum) {
             currentFont = fontNum;
             const displayText = document.getElementById('displayText');
-            displayText.classList.remove('font1', 'font2', 'font3');
+            const displayText2 = document.getElementById('displayText2');
+            for (let i = 1; i <= 10; i++) {
+                displayText.classList.remove('font' + i);
+                displayText2.classList.remove('font' + i);
+            }
             displayText.classList.add('font' + fontNum);
+            displayText2.classList.add('font' + fontNum);
+            updateScrollSpeed();
         }
 
-        function changeEffect() {
-            currentEffect = (currentEffect % totalEffects) + 1;
-            const displayText = document.getElementById('displayText');
-            displayText.classList.remove('effect1', 'effect2', 'effect3');
-            displayText.classList.add('effect' + currentEffect);
+        function updateColors() {
+            const mainColor = document.getElementById('mainColor').value;
+            const subColor = document.getElementById('subColor').value;
             
-            const newText = document.getElementById('cheerText').value.replace(/\\n/g, '\n');
-            displayText.innerText = newText;
+            document.documentElement.style.setProperty('--main-color', mainColor);
+            document.documentElement.style.setProperty('--sub-color', subColor);
+        }
+
+        function updateScrollSpeed() {
+            const container = document.getElementById('textContainer');
+            const speed = document.getElementById('scrollSpeed').value;
+            
+            container.classList.remove('scrolling');
+            container.classList.remove('centered');
+            void container.offsetWidth; // 触发重排
+
+            if (speed > 0) {
+                container.classList.add('scrolling');
+                container.style.animationDuration = speed + 's';
+            } else {
+                container.classList.add('centered');
+            }
         }
 
         function updateText() {
             const newText = document.getElementById('cheerText').value.replace(/\\n/g, '\n');
             document.getElementById('displayText').innerText = newText;
+            document.getElementById('displayText2').innerText = newText;
             document.getElementById('inputSection').style.display = 'none';
+            
+            updateScrollSpeed();
             
             document.documentElement.requestFullscreen().catch(err => {
                 console.log(`Error attempting to enable full-screen mode: ${err.message}`);
@@ -234,8 +320,13 @@
             }
         });
 
-        // 初始化字体大小
+        // 监听窗口大小变化
+        window.addEventListener('resize', updateScrollSpeed);
+
+        // 初始化
         updateFontSize();
+        updateColors();
+        updateScrollSpeed();
 
         // 防止页面滚动
         document.body.addEventListener('touchmove', function(e) {
