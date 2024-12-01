@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-<!-- 前面的 head 部分样式保持不变，只添加新的字体链接和样式 -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@700&family=ZCOOL+KuaiLe&family=ZCOOL+QingKe+HuangYou&family=ZCOOL+XiaoWei&family=Zhi+Mang+Xing&family=Long+Cang&family=Liu+Jian+Mao+Cao&family=Noto+Serif+SC:wght@700&family=Noto+Sans+TC:wght@700&display=swap" rel="stylesheet">
     <title>马拉松应援灯牌</title>
     <style>
-        /* 之前的样式保持不变 */
+        :root {
+            --main-color: #CD26E3;
+            --sub-color: #CB8DE8;
+        }
+
         .glow {
             animation: glow 1s ease-in-out infinite alternate;
             position: relative;
@@ -33,7 +36,6 @@
             }
         }
 
-        /* 添加新的字体类 */
         .font1 { font-family: 'Noto Sans SC', sans-serif; }
         .font2 { font-family: 'Noto Serif SC', serif; }
         .font3 { font-family: 'Ma Shan Zheng', cursive; }
@@ -45,13 +47,13 @@
         .font9 { font-family: 'Liu Jian Mao Cao', cursive; }
         .font10 { font-family: 'Noto Sans TC', sans-serif; }
 
-        /* 其他样式保持不变 */
         .scroll-container {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 0;
+            left: 0;
             white-space: nowrap;
             will-change: transform;
+            padding-top: 20px;
         }
 
         .scroll-text {
@@ -73,9 +75,9 @@
             -webkit-user-select: none;
             user-select: none;
             overflow: hidden;
+            background-color: #000000;
         }
 
-        /* 添加下拉列表样式 */
         select {
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -85,7 +87,6 @@
             padding-right: 2.5rem;
         }
 
-        /* 其他样式保持不变 */
         input[type="range"] {
             -webkit-appearance: none;
             width: 200px;
@@ -99,7 +100,7 @@
             -webkit-appearance: none;
             width: 20px;
             height: 20px;
-            background: #ff69b4;
+            background: #ffffff;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -133,7 +134,7 @@
             resize: none;
         }
 
-        #displayText {
+        #displayText, #displayText2 {
             white-space: pre;
             line-height: 1.2;
             display: inline-block;
@@ -153,7 +154,7 @@
 
         .centered {
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
         }
     </style>
 </head>
@@ -171,7 +172,7 @@
                     <input type="range" 
                            id="fontSize" 
                            min="60" 
-                           max="300" 
+                           max="2000" 
                            value="150" 
                            class="mx-2"
                            oninput="updateFontSize()">
@@ -180,11 +181,11 @@
                 <div class="flex items-center justify-center space-x-4 mb-4">
                     <div class="text-center">
                         <div class="text-white mb-2">主要颜色</div>
-                        <input type="color" id="mainColor" value="#ff0080" oninput="updateColors()">
+                        <input type="color" id="mainColor" value="#CD26E3" oninput="updateColors()">
                     </div>
                     <div class="text-center">
                         <div class="text-white mb-2">辅助颜色</div>
-                        <input type="color" id="subColor" value="#ff69b4" oninput="updateColors()">
+                        <input type="color" id="subColor" value="#CB8DE8" oninput="updateColors()">
                     </div>
                 </div>
                 <div class="flex items-center justify-center space-x-4 mb-4">
@@ -194,7 +195,7 @@
                                id="scrollSpeed" 
                                min="0" 
                                max="60" 
-                               value="3" 
+                               value="4" 
                                class="bg-gray-800 text-white px-2 py-1 rounded"
                                oninput="updateScrollSpeed()">
                     </div>
@@ -209,7 +210,7 @@
                             <option value="2">思源宋体</option>
                             <option value="3">马善政</option>
                             <option value="4">智慧体</option>
-                            <option value="5">快乐体</option>
+                            <option value="5" selected>快乐体</option>
                             <option value="6">青柯黄油体</option>
                             <option value="7">小魏体</option>
                             <option value="8">长仓体</option>
@@ -220,7 +221,7 @@
                 </div>
                 <div class="space-x-2">
                     <button onclick="updateText()" 
-                            class="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-2 px-6 rounded-lg">
+                            class="bg-white hover:bg-gray-200 text-black text-xl font-bold py-2 px-6 rounded-lg">
                         确认
                     </button>
                 </div>
@@ -231,12 +232,12 @@
     <div class="display-container">
         <div id="textContainer" class="scroll-container">
             <div class="scroll-text">
-                <h1 id="displayText" class="glow font1 text-white text-8xl md:text-9xl font-bold tracking-wider">
+                <h1 id="displayText" class="glow font5 text-white text-8xl md:text-9xl font-bold tracking-wider">
                     +7AI实验室
                 </h1>
             </div>
             <div class="scroll-text">
-                <h1 id="displayText2" class="glow font1 text-white text-8xl md:text-9xl font-bold tracking-wider">
+                <h1 id="displayText2" class="glow font5 text-white text-8xl md:text-9xl font-bold tracking-wider">
                     +7AI实验室
                 </h1>
             </div>
@@ -244,9 +245,8 @@
     </div>
 
     <script>
-        let currentFont = 1;
+        let currentFont = 5;
 
-        // 处理输入，只接受\n作为换行
         document.getElementById('cheerText').addEventListener('input', function() {
             let text = this.value;
             text = text.replace(/\r\n/g, '\\n').replace(/\n/g, '\\n');
@@ -288,7 +288,7 @@
             
             container.classList.remove('scrolling');
             container.classList.remove('centered');
-            void container.offsetWidth; // 触发重排
+            void container.offsetWidth;
 
             if (speed > 0) {
                 container.classList.add('scrolling');
@@ -320,15 +320,12 @@
             }
         });
 
-        // 监听窗口大小变化
         window.addEventListener('resize', updateScrollSpeed);
 
-        // 初始化
         updateFontSize();
         updateColors();
         updateScrollSpeed();
 
-        // 防止页面滚动
         document.body.addEventListener('touchmove', function(e) {
             e.preventDefault();
         }, { passive: false });
